@@ -1,0 +1,6 @@
+.DS_Store
+_notes/
+.sass-cache/
+node_modules/
+vendor/.git/
+node-debug.log

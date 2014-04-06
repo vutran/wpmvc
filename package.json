@@ -1,0 +1,25 @@
+{
+    "name": "wpmvc-theme",
+    "description": "WordPress MVC Theme Skeleton",
+    "repository" : {
+        "type" : "git",
+        "url" : "git@bitbucket.org:tranvu/wpmvc.git"
+    },
+    "devDependencies": {
+        "grunt": "~0.4.4",
+        "load-grunt-config": "~0.7.1",
+        "load-grunt-tasks": "~0.3.0",
+        "grunt-contrib-coffee": "~0.10.1",
+        "grunt-contrib-watch": "~0.6.1",
+        "grunt-contrib-sass": "~0.7.3",
+        "grunt-contrib-imagemin": "~0.5.0",
+        "grunt-contrib-clean": "~0.5.0",
+        "grunt-contrib-concat": "~0.3.0",
+        "grunt-contrib-uglify": "~0.4.0",
+        "grunt-contrib-copy": "~0.5.0"
+    },
+    "license": "MIT",
+    "dependencies": {
+        "time-grunt": "~0.2.9"
+    }
+}
