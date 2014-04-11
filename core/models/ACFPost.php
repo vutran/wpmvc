@@ -1,6 +1,6 @@
 <?php
 
-namespace WPMVC\Model;
+namespace WPMVC\Models;
 
 // Import namespaces
 use WPMVC\Model\Post;
