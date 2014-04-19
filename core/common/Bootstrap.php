@@ -8,7 +8,7 @@ use WPMVC\Models\View;
 /**
  * Core WPMVC Bootstrap
  */
-class WPMVC
+class Bootstrap
 {
 
     /**
@@ -28,11 +28,6 @@ class WPMVC
         define('STYLESHEET_URL', get_stylesheet_directory_uri());
         define('TEMPLATE_URL', get_template_directory_uri());
         define('RSS2_URL', get_bloginfo('rss2_url'));
-
-        // Composer autoload
-        if (file_exists(STYLESHEETPATH . '/vendor/autoload.php')) {
-            require_once(STYLESHEETPATH . '/vendor/autoload.php');
-        }
 
         // Auto-load hook files
         $hooks = glob(TEMPLATEPATH . '/app/hooks/*');
