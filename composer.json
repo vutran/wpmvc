@@ -4,7 +4,8 @@
             "WPMVC\\" : "core/"
         },
         "classmap" : [
-            "app/models/"
+            "app/models/",
+            "app/traits/"
         ]
     }
 }

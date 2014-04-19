@@ -1,1 +1,5 @@
-jQuery(function(){console.log("hello world")});
+jQuery(function($) {
+
+    console.log('hello world');
+
+});

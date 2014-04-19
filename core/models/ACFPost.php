@@ -62,5 +62,3 @@ class ACFPost extends Post
     }
 
 }
-
-?>

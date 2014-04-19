@@ -1,9 +1,8 @@
 module.exports =
     options :
         style : "nested"
-        compass: true
-
-    default :
+        loadPath : require("node-bourbon").includePaths
+    dev :
         expand : true
         cwd : "app/assets/stylesheets/"
         src : "**/*.{sass,scss}"

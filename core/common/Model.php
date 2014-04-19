@@ -15,7 +15,7 @@ abstract class Model
      * @access protected
      * @var array
      */
-    protected $_data = array();
+    protected $data = array();
 
     /**
      * Instantiates a new model
@@ -26,7 +26,7 @@ abstract class Model
      */
     public function __construct($data = array())
     {
-        $this->_data = $data;
+        $this->data = $data;
     }
 
     /**
@@ -38,7 +38,7 @@ abstract class Model
      */
     public function __get($key)
     {
-        return (isset($this->_data[$key])) ? $this->_data[$key] : null;
+        return (isset($this->data[$key])) ? $this->data[$key] : null;
     }
 
     /**
@@ -51,7 +51,7 @@ abstract class Model
      */
     public function __set($key, $value)
     {
-        $this->_data[$key] = $value;
+        $this->data[$key] = $value;
     }
 
     /**
@@ -62,9 +62,7 @@ abstract class Model
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
 
 }
-
-?>

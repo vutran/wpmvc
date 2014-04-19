@@ -12,20 +12,20 @@ class Post
 {
 
     /**
+     * A WP_Post object instance
+     *
+     * @access public
+     * @var WP_Post
+     */
+    public $post = false;
+
+    /**
      * The transient timeout
      *
      * @access protected
      * @var int
      */
     protected $transientTimeout = 1;
-
-    /**
-     * A WP_Post object instance
-     *
-     * @access protected
-     * @var WP_Post
-     */
-    protected $post = false;
 
     /**
      * An array of post meta key and values
@@ -544,5 +544,3 @@ class Post
     }
 
 }
-
-?>

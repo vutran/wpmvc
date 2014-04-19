@@ -1,11 +1,10 @@
 module.exports =
     tmp :
-        src : [
-            "app/_tmp/"
-        ]
+        src : ["app/_tmp/"]
     default :
         src : [
-            "assets/stylesheets/"
+            "assets/fonts/"
             "assets/images/"
             "assets/scripts/"
+            "assets/stylesheets/"
         ]

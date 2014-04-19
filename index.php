@@ -21,16 +21,23 @@ if (is_home()) {
     if (is_404()) {
         // 404 view
         $theBody->setFile('404');
+    } elseif (is_search()) {
+        $theBody->setFile('search/index');
+    } elseif (is_tax()) {
+        $taxonomy = get_query_var('taxonomy');
+        $theBody->setFile(sprintf('taxonomy/%s/index', $taxonomy));
+    } elseif (is_tag()) {
+        $theBody->setFile('views/tag/index');
+    } elseif (is_post_type_archive()) {
+        // Archive view
+        $theBody->setFile(sprintf('%s/index', $postType));
+    } elseif (is_single()) {
+        // Permalink view
+        $theBody->setFile(sprintf('%s/single', $postType));
     } elseif (is_page()) {
         global $pagename;
         // Page view
         $theBody->setFile($pagename);
-    } elseif (is_single()) {
-        // Permalink view
-        $theBody->setFile(sprintf('%s/single', $postType));
-    } elseif (is_post_type_archive()) {
-        // Archive view
-        $theBody->setFile(sprintf('%s/index', $postType));
     }
 }
 
@@ -39,5 +46,3 @@ $theFooter->setFile('footer');
 echo $theHeader->output();
 echo $theBody->output();
 echo $theFooter->output();
-
-?>

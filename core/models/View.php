@@ -220,5 +220,3 @@ class View extends Model
     }
 
 }
-
-?>

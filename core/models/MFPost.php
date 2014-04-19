@@ -50,5 +50,3 @@ class MFPost extends Post
     }
 
 }
-
-?>
