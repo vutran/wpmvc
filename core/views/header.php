@@ -13,4 +13,4 @@
 
 <body <?php body_class(); ?>>
 
-<?php do_action('wp_theme_header'); ?>
+<?php do_action('wpmvc_theme_header'); ?>

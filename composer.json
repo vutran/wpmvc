@@ -7,5 +7,8 @@
             "app/models/",
             "app/traits/"
         ]
+    },
+    "require" : {
+        "mrclay/minify": "2.2.0"
     }
 }

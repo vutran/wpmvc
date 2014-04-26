@@ -2,7 +2,8 @@
 
 namespace WPMVC\Models;
 
-use WPMVC\Common\Model;
+use \WPMVC\Common\Model,
+    \Minify_HTML;
 
 /**
  * The View Model
@@ -50,20 +51,6 @@ class View extends Model
     }
 
     /**
-     * Output's the view
-     *
-     * @access public
-     * @param string $name                The name of the view to load (relative to the views directory)
-     * @param array $vars                 An array of variables to pass to the view
-     * @return self
-     */
-    public function display($name, $vars = array())
-    {
-        echo $this->get($name, $vars);
-        return $this;
-    }
-
-    /**
      * Sets a variable for the view
      *
      * @access public
@@ -80,6 +67,17 @@ class View extends Model
             }
         }
         return $this;
+    }
+
+    /**
+     * Retrieves all stored variable
+     *
+     * @access public
+     * @return array
+     */
+    public function getVars()
+    {
+        return $this->_vars;
     }
 
     /**
@@ -139,18 +137,19 @@ class View extends Model
      * Retrieve's the view output
      *
      * @access public
-     * @param array $vars                 (default: array()) An array of variables to pass to the view
+     * @param int $minify                 (default: false) Set to true to minify
      * @return string
      */
-    public function output($vars = array())
+    public function output($minify = false)
     {
         // If the view file exists
         if ($this->hasFile()) {
-            // Merge registry variables
-            extract($vars);
+            // Extract all view variables
+            extract($this->getVars(vars));
             ob_start();
             include($this->getPath() . '/' . $this->getFile(true));
             $html = ob_get_contents();
+            if ($minify) { $html = Minify_HTML::minify($html); }
             ob_end_clean();
             return $html;
         } else {

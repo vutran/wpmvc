@@ -12,6 +12,19 @@ class Bootstrap
 {
 
     /**
+     * Create a new View instance
+     *
+     * @access public
+     * @static
+     * @return \WPMVC\Models\View
+     */
+    public function createView()
+    {
+        $view = new View(TEMPLATEPATH . '/app/views/');
+        return $view;
+    }
+
+    /**
      * Initializes the WordPress theme
      *
      * @access public
