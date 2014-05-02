@@ -73,8 +73,8 @@ class Bootstrap
         if (is_home()) {
             $theBody->setFile('home');
         } else {
-            // Retrieve the current requested post type (applies to pages, and post single and archive views)
-            $postType = get_post_type();
+            // Retrieve the requested post type
+            $postType = get_query_var('post_type');
             if (is_404()) {
                 // 404 view
                 $theBody->setFile('404');
@@ -87,11 +87,17 @@ class Bootstrap
                 $theBody->setFile(sprintf('taxonomy/%s/index', $taxonomy));
             } elseif (is_tag()) {
                 // Tag archive
-                $theBody->setFile('views/tag/index');
+                $theBody->setFile('tag/index');
+            } elseif (is_page()) {
+                global $pagename;
+                // Page view
+                $theBody->setFile($pagename);
             } elseif (is_post_type_archive()) {
                 // Post type archive
                 $theBody->setFile(sprintf('%s/index', $postType));
             } elseif (is_single()) {
+                // Retrieve the current requested post type (applies to pages, and post single and archive views)
+                $postType = get_post_type();
                 // Post permalink
                 $theBody->setFile(sprintf('%s/single', $postType));
             } elseif (is_page()) {

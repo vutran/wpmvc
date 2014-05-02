@@ -12,14 +12,6 @@ class Post
 {
 
     /**
-     * A WP_Post object instance
-     *
-     * @access public
-     * @var WP_Post
-     */
-    public $post = false;
-
-    /**
      * The transient timeout
      *
      * @access protected
@@ -28,12 +20,28 @@ class Post
     protected $transientTimeout = 1;
 
     /**
+     * A WP_Post object instance
+     *
+     * @access public
+     * @var WP_Post
+     */
+    public $post = false;
+
+    /**
      * An array of post meta key and values
      *
      * @access protected
-     * @var √
+     * @var array
      */
     protected $metaData = false;
+
+    /**
+     * An array of post terms
+     *
+     * @access protected
+     * @var array
+     */
+    protected $terms = array();
 
     /**
      * A WP_Post object instance representing the next post object
@@ -52,52 +60,101 @@ class Post
     protected $prevPost = false;
 
     /**
+     * Query for posts and returns an array of the model
+     *
+     * @access public
+     * @static
+     * @return array|bool
+     */
+    public static function queryPosts($args)
+    {
+        $query = new WP_Query($args);
+        // Set default return to false
+        $posts = false;
+        // Iterate and build the array of instances instances
+        if ($query->have_posts()) {
+            global $post;
+            // Create the array
+            $posts = array();
+            while ($query->have_posts()) {
+                $query->the_post();
+                $thePost = static::create($post);
+                array_push($posts, $thePost);
+            }
+        }
+        return $posts;
+    }
+
+    /**
+     * Creatrs a new instance by the post ID
+     *
+     * @access public
+     * @param int $postId
+     * @return static
+     */
+    public static function createById($postId)
+    {
+        $post = get_post(intval($post));
+        return new static($post);
+    }
+
+    /**
+     * Creatrs a new instance by the post ID
+     *
+     * @access public
+     * @param array|int|WP_Post $postId
+     * @return static
+     */
+    public static function create($post)
+    {
+        // If numeric, create the post
+        if (is_numeric($post)) {
+            // Retrieve the transient
+            $transientKey = sprintf('WPMVC\Models\Post(%d)', $post);
+            $storedData = get_transient($transientKey);
+            // If the transient doesn't yet exist, query for it!
+            if ($storedData === false) {
+                // Retrieve the post object
+                $post = get_post(intval($post));
+                // Store the transient
+                set_transient($transientKey, $post, $this->transientTimeout);
+            } else { $post = $storedData; }
+        } elseif (is_array($post)) {
+            // Convert array into object
+            $post = (object) $post;
+        }
+        return new static($post);
+    }
+
+    /**
      * Creates the post model
      *
      * Also loads the custom post meta data
      *
      * @constructor
      * @access public
-     * @param int|object|array|WP_Post    A post ID or a post object or WP_Post instance
+     * @param WP_Post               A WP_Post instance
      */
     public function __construct($post)
     {
-        // If a number is given
-        if (is_numeric($post)) {
-            // Retrieve the transient
-            $transientKey = sprintf('WPMVC_Post_%d', $post);
-            $storedData = get_transient($transientKey);
-            // If the transient doesn't yet exist, query for it!
-            if ($storedData === false) {
-                $post = get_post(intval($post));
-                set_transient($transientKey, $post, $this->transientTimeout);
-            } else { $post = $storedData; }
-        }
-        // If an array is given
-        if (is_array($post)) {
-            $this->post = (object) $post;
-        }
         // If an object is given
         if (is_object($post)) {
             $this->post = $post;
             // Load meta data
             $this->loadMetaData();
-            // Set the adjacent post    
-            $this->nextPost = $this->getAdjacentPost('next', $this->get('post_type'));
-            $this->prevPost = $this->getAdjacentPost('prev', $this->get('post_type'));
         }
     }
 
     /**
      * Loads the post's meta data
      *
-     * @access public
+     * @access protected
      * @return void
      */
-    public function loadMetaData()
+    protected function loadMetaData()
     {
         // Retrieve the transient
-        $transientKey = sprintf('WPMVC_Post_%d_loadMetaData', $this->id());
+        $transientKey = sprintf('WPMVC\Models\Post(%d)::loadMetaData', $this->id());
         $metaData = get_transient($transientKey);
         // If it doesn't exist
         if (!$metaData) {
@@ -219,7 +276,7 @@ class Post
      *
      * @access public
      * @link http://codex.wordpress.org/Function_Reference/get_the_title
-     * @global object $post
+     * @global WP_Post $post
      * @param string $moreLinkText (default: null)
      * @param string $stripTeaser boolean (default: false)
      * @return string
@@ -227,6 +284,7 @@ class Post
     public function content($moreLinkText = null, $stripTeaser = false)
     {
         global $post;
+        // Store current post into temp variable
         $_p = $post;
         $post = $this->post;
         setup_postdata($post);
@@ -234,6 +292,7 @@ class Post
         // Apply filter
         $content = apply_filters('the_content', $content);
         $content = str_replace(']]>', ']]&gt;', $content);
+        // Restore post
         $post = $_p;
         setup_postdata($post);
         return $content;
@@ -246,7 +305,7 @@ class Post
      *
      * @access public
      * @link http://codex.wordpress.org/Function_Reference/get_the_excerpt
-     * @global object $post
+     * @global WP_Post $post
      * @param int $wordCount (default: 20)
      * @param string $delimiter (default: '...')
      * @return string
@@ -257,20 +316,18 @@ class Post
         // Store current post into temp variable
         $_p = $post;
         $post = $this->post;
-
+        setup_postdata($post);
         // Do the magic!
         $limit = $wordCount + 1;
         $full_excerpt = get_the_excerpt();
         $full_excerpt_count = count(explode(' ', $full_excerpt)); /* Correct Word Count */
         $new_excerpt = explode(' ', $full_excerpt, $limit);
-
         if ($full_excerpt_count <= $wordCount) { $delimiter = ''; }
         else { array_pop($new_excerpt); }
         $new_excerpt = implode(" ",$new_excerpt) . $delimiter;
-
         // Restore post
         $post = $_p;
-
+        setup_postdata($post);
         return $new_excerpt;
     }
 
@@ -288,27 +345,58 @@ class Post
      */
     public function improvedExcerpt($wordCount = 20, $moreLinkText = true)
     {
-            $text = '';
-            if ($this->id()) {
-                    $text = $this->post->post_content;
-                    $text = apply_filters('the_content', $text);
-                    $text = str_replace('\]\]\>', ']]&gt;', $text);
+        $text = '';
+        if ($this->id()) {
+            $text = $this->post->post_content;
+            $text = apply_filters('the_content', $text);
+            $text = str_replace('\]\]\>', ']]&gt;', $text);
 
-                    // Allow <a> and <p> as well as formatting and list items
-                    $text = strip_tags($text, '<a><p><i><em><strong><b><ul><ol><li>');
-                    $words_array = explode(' ', $text, $wordCount + 1);
-                    if (count($words_array) > $wordCount) {
-                            array_pop($words_array);
-                            if ($moreLinkText) array_push($words_array, '<br /><a href="'. $this->permalink() . '">read more</a>');
-                            $words_array[0] = str_replace('<p>', '', $words_array[0]); // remove <p> tag at beginning
-                            $text = implode(' ', $words_array);
-                    }
+            // Allow <a> and <p> as well as formatting and list items
+            $text = strip_tags($text, '<a><p><i><em><strong><b><ul><ol><li>');
+            $words_array = explode(' ', $text, $wordCount + 1);
+            if (count($words_array) > $wordCount) {
+                array_pop($words_array);
+                if ($moreLinkText) array_push($words_array, '<br /><a href="'. $this->permalink() . '">read more</a>');
+                $words_array[0] = str_replace('<p>', '', $words_array[0]); // remove <p> tag at beginning
+                $text = implode(' ', $words_array);
             }
-            return $text;
+        }
+        return $text;
+    }
+    
+    /**
+     * Retrieves the taxonomy terms for the post
+     *
+     * @access public
+     * @return object
+     */
+    public function getTerms($taxonomy)
+    {
+        // If terms isn't set
+        if (!$this->terms) {
+            // Retrieve the transient value
+            $transientKey = sprintf('WPMVC\Models\Post::getTerms(%s)', $this->id(), $taxonomy);
+            $terms = get_transient($transientKey);
+            // If the terms isn't found in the cache
+            if (!$terms) {
+                // Query for the terms
+                $args = array(
+                    'orderby' => 'name', 
+                    'order' => 'ASC'
+                );
+                // Retrieve and set the terms
+                $terms = wp_get_post_terms($this->id(), $taxonomy, $args);
+                // Store into the cache
+                set_transient($transientKey, $terms, $this->transientTimeout);
+            }
+            // Set the terms
+            $this->terms[$taxonomy] = $terms;
+        }
+        return $this->terms[$taxonomy];
     }
 
     /**
-     * Retrieve the post's categories
+     * Retrieve the post's categories in a list format
      *
      * @access public
      * @return string
@@ -319,7 +407,7 @@ class Post
     }
     
     /**
-     * Retrieve the post's categories
+     * Retrieve the post's categories in a list format
      *
      * @access public
      * @return string
@@ -366,6 +454,35 @@ class Post
         return $this->has('ID') ? get_the_time($format, $this->id()) : '';
     }
 
+    /**
+     * Loads the adjacent posts
+     *
+     * @access public
+     * @param string $direction (default: null)
+     * @return void
+     */
+    protected function loadAdjacentPost($direction = null)
+    {
+        $loadPrev = $loadNext = false;
+        switch ($direction) {
+            case 'prev':
+                $loadPrev = true;
+                break;
+            case 'next':
+                $loadNext = true;
+                break;
+            default:
+                $loadPrev = $loadNext = true;
+                break;
+        }
+        if ($loadPrev && !$this->prevPost) {
+            $this->prevPost = $this->getAdjacentPost('prev', $this->get('post_type'));
+        }
+        if ($loadNext && !$this->nextPost) {
+            $this->nextPost = $this->getAdjacentPost('next', $this->get('post_type'));
+        }
+    }
+
     /*
      * Replacement for get_adjacent_post()
      *
@@ -394,7 +511,6 @@ class Post
             } else {
                 $post_types = "'" . $post_types . "'";
             }
-
             $current_post_date = $this->get('post_date');
             $join = '';
             $in_same_cat = FALSE;
@@ -503,44 +619,6 @@ class Post
     public function getNextTitle()
     {
         return $this->hasPrevPost() ? $this->nextPost->post_title : '';
-    }
-    
-    /**
-     * Retrieves the taxonomy terms
-     *
-     * @access public
-     * @return object
-     */
-    public static function getTerms($taxonomy)
-    {
-        $args = array(
-            'orderby'       => 'name', 
-            'order'         => 'ASC'
-        );
-        $terms = get_terms($taxonomy, $args);
-        return $terms;
-    }
-    
-    /**
-     * Retrieves the taxonomy terms associated with the current post
-     *
-     * @access public
-     * @return string
-     */
-    public static function getAssociatedTerms($postId, $taxonomy)
-    {
-        $args = array(
-            'orderby'       => 'name', 
-            'order'         => 'ASC'
-        );
-        $termsArray = array();
-        $terms = wp_get_post_terms($postId, $taxonomy, $args);
-        if ($terms && is_array($terms) && count($terms)) {
-            foreach ($terms as $term){
-                array_push($termsArray, $term->slug);
-            }
-        }
-        return implode(' ', $termsArray);
     }
 
 }

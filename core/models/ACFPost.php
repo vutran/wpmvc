@@ -3,7 +3,7 @@
 namespace WPMVC\Models;
 
 // Import namespaces
-use WPMVC\Model\Post;
+use \WPMVC\Models\Post;
 
 /**
  * ACF Post extension
@@ -15,6 +15,14 @@ class ACFPost extends Post
 {
 
     /**
+     * Sets the transient timeout for the field values
+     *
+     * @access protected
+     * @var int
+     */
+    protected $transientTimeout = 1;
+
+    /**
      * An array of ACF keys and values
      *
      * @access protected
@@ -23,18 +31,23 @@ class ACFPost extends Post
     protected $acfValues = false;
 
     /**
-     * Instantiates a new ACF post instance
+     * Loads the ACF values
      *
      * @access public
-     * @constructor
-     * @param mixed $post
+     * @return void
      */
-    public function __construct($post)
+    public function loadAcfValues()
     {
-        parent::__construct($post);
-        // Load ACF custom fields
-        if (function_exists('get_fields')) {
-            $this->acfValues = get_fields($this->id());
+        // Retrieve from transient
+        $transientKey = sprintf('WPMVC\Models\ACFPost(%d)::acfValues', $this->id());
+        $this->acfValues = get_transient($transientKey);
+        // If the values are not available
+        if (!$this->acfValues) {
+            // Load ACF custom fields
+            if (function_exists('get_fields')) {
+                $this->acfValues = get_fields($this->id());
+                set_transient($transientKey, $this->acfValues, $this->transientTimeout);
+            }
         }
     }
 
@@ -47,6 +60,8 @@ class ACFPost extends Post
      */
     public function hasField($key)
     {
+        // Load the values if necessary
+        if (!$this->acfValues) { $this->loadAcfValues(); }
         return isset($this->acfValues[$key]) ? true : false;
     }
 

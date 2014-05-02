@@ -3,7 +3,7 @@
 namespace WPMVC\Models;
 
 // Import namespaces
-use WPMVC\Model\Post;
+use \WPMVC\Models\Post;
 
 /**
  * MF2 Post extension
