@@ -40,6 +40,7 @@ class Bootstrap
         define('TEMPLATEDIR', str_replace(WP_CONTENT_DIR, '', WP_CONTENT_URL . TEMPLATEPATH));
         define('STYLESHEET_URL', get_stylesheet_directory_uri());
         define('TEMPLATE_URL', get_template_directory_uri());
+        define('ASSETSDIR', get_template_directory_uri().'/app/assets');
         define('RSS2_URL', get_bloginfo('rss2_url'));
 
         // Auto-load hook files
@@ -60,9 +61,9 @@ class Bootstrap
     public function init()
     {
         // Create a new view and set the default path as the current path
-        $theHeader = new View(TEMPLATEPATH . '/core/views/');
+        $theHeader = new View(TEMPLATEPATH . '/core/Views/');
         $theBody = new View(TEMPLATEPATH . '/app/views/');
-        $theFooter = new View(TEMPLATEPATH . '/core/views/');
+        $theFooter = new View(TEMPLATEPATH . '/core/Views/');
 
         // Set the header view
         $theHeader->setFile('header');

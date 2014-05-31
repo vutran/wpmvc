@@ -2,6 +2,9 @@
 
 namespace WPMVC\Models;
 
+// Import namespaces
+use WP_Query;
+
 /**
  * A basic WordPress post model
  *
@@ -284,17 +287,17 @@ class Post
     public function content($moreLinkText = null, $stripTeaser = false)
     {
         global $post;
-        // Store current post into temp variable
         $_p = $post;
         $post = $this->post;
         setup_postdata($post);
-        $content = get_the_content();
+        $content = get_the_content($moreLinkText, $stripTeaser);
         // Apply filter
         $content = apply_filters('the_content', $content);
         $content = str_replace(']]>', ']]&gt;', $content);
-        // Restore post
         $post = $_p;
-        setup_postdata($post);
+        if ($_p) {
+            setup_postdata($post);
+        }
         return $content;
     }
 
@@ -316,18 +319,20 @@ class Post
         // Store current post into temp variable
         $_p = $post;
         $post = $this->post;
-        setup_postdata($post);
+
         // Do the magic!
         $limit = $wordCount + 1;
         $full_excerpt = get_the_excerpt();
         $full_excerpt_count = count(explode(' ', $full_excerpt)); /* Correct Word Count */
         $new_excerpt = explode(' ', $full_excerpt, $limit);
+
         if ($full_excerpt_count <= $wordCount) { $delimiter = ''; }
         else { array_pop($new_excerpt); }
         $new_excerpt = implode(" ",$new_excerpt) . $delimiter;
+
         // Restore post
         $post = $_p;
-        setup_postdata($post);
+
         return $new_excerpt;
     }
 
@@ -338,7 +343,7 @@ class Post
      *
      * @access public
      * @link http://codex.wordpress.org/Function_Reference/get_the_excerpt
-     * @global object $post
+     * @global WP_Post $post
      * @param int $wordCount (default: 20)
      * @param bool $moreLinkText (default: true)
      * @return string

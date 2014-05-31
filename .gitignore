@@ -4,3 +4,4 @@ _notes/
 node_modules/
 vendor/.git/
 node-debug.log
+npm-debug.log

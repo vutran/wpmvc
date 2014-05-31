@@ -4,5 +4,5 @@ module.exports =
             expand : true
             cwd : "app/assets/images/"
             src : ["**/*.{png,jpg,gif}"]
-            dest : "app/assets/images/"
+            dest : "assets/images/"
         ]
