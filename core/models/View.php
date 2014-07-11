@@ -145,7 +145,7 @@ class View extends Model
         // If the view file exists
         if ($this->hasFile()) {
             // Extract all view variables
-            extract($this->getVars($vars));
+            extract($this->getVars());
             ob_start();
             include($this->getPath() . '/' . $this->getFile(true));
             $html = ob_get_contents();
