@@ -70,8 +70,8 @@ class Bootstrap
         // Set the footer view
         $theFooter->setFile('footer');
 
-        // If request for homepage
-        if (is_home()) {
+        // If the front page is requested
+        if (is_front_page() || is_home()) {
             $theBody->setFile('home');
         } else {
             // Retrieve the requested post type
