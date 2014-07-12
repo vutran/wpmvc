@@ -18,7 +18,7 @@ class Bootstrap
      * @static
      * @return \WPMVC\Models\View
      */
-    public function createView()
+    public static function createView()
     {
         $view = new View(TEMPLATEPATH . '/app/views/');
         return $view;
