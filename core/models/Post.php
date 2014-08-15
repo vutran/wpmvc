@@ -89,7 +89,7 @@ class Post
     }
 
     /**
-     * Creatrs a new instance by the post ID
+     * Creates a new instance by the post ID
      *
      * @access public
      * @param int $postId
@@ -102,7 +102,7 @@ class Post
     }
 
     /**
-     * Creatrs a new instance by the post ID
+     * Creates a new instance by the post ID
      *
      * @access public
      * @param array|int|WP_Post $postId
@@ -163,8 +163,8 @@ class Post
         if (!$metaData) {
             $keys = get_post_custom($this->id());
             $metaData = array();
-            if (count($keys)) {
-                foreach ($keys as $key=>$value) {
+            if ($keys && is_array($keys) && count($keys)) {
+                foreach ($keys as $key => $value) {
                     // If only 1 value, it's a string
                     if (is_array($value) && count($value) == 1) { $metaData[$key] = $value[0]; }
                     else { $metaData[$key] = $value; }
@@ -202,7 +202,7 @@ class Post
      * Checks if the post has a meta key
      *
      * @access public
-     * @return bool 
+     * @return bool
      */
     public function hasMeta($option)
     {
@@ -287,6 +287,7 @@ class Post
     public function content($moreLinkText = null, $stripTeaser = false)
     {
         global $post;
+        // Store current post into temp variable
         $_p = $post;
         $post = $this->post;
         setup_postdata($post);
@@ -294,6 +295,7 @@ class Post
         // Apply filter
         $content = apply_filters('the_content', $content);
         $content = str_replace(']]>', ']]&gt;', $content);
+        // Restore the post
         $post = $_p;
         if ($_p) {
             setup_postdata($post);
@@ -319,20 +321,20 @@ class Post
         // Store current post into temp variable
         $_p = $post;
         $post = $this->post;
-
+        setup_postdata($post);
         // Do the magic!
         $limit = $wordCount + 1;
         $full_excerpt = get_the_excerpt();
         $full_excerpt_count = count(explode(' ', $full_excerpt)); /* Correct Word Count */
         $new_excerpt = explode(' ', $full_excerpt, $limit);
-
         if ($full_excerpt_count <= $wordCount) { $delimiter = ''; }
         else { array_pop($new_excerpt); }
         $new_excerpt = implode(" ",$new_excerpt) . $delimiter;
-
-        // Restore post
+        // Restore the post
         $post = $_p;
-
+        if ($_p) {
+            setup_postdata($post);
+        }
         return $new_excerpt;
     }
 
@@ -368,7 +370,7 @@ class Post
         }
         return $text;
     }
-    
+
     /**
      * Retrieves the taxonomy terms for the post
      *
@@ -386,7 +388,7 @@ class Post
             if (!$terms) {
                 // Query for the terms
                 $args = array(
-                    'orderby' => 'name', 
+                    'orderby' => 'name',
                     'order' => 'ASC'
                 );
                 // Retrieve and set the terms
@@ -410,9 +412,9 @@ class Post
     {
         return get_the_category_list();
     }
-    
+
     /**
-     * Retrieve the post's categories in a list format
+     * Retrieve the post's tags in a list format
      *
      * @access public
      * @return string
@@ -421,7 +423,7 @@ class Post
     {
         return get_the_tag_list($before, $sep, $after);
     }
-    
+
     /**
      * Checks if the post has a thumbnail
      *
@@ -460,6 +462,89 @@ class Post
     }
 
     /**
+     * Retrieve the time ago string
+     *
+     * @access public
+     * @return string
+     */
+    public function timeAgo()
+    {
+        return human_time_diff(strtotime($this->postTime('c')));
+    }
+
+    /**
+     * Retrieve the number of comments made on the post
+     *
+     * @access public
+     * @return int
+     */
+    public function commentCount()
+    {
+        return get_comments_number($this->id());
+    }
+
+    /**
+     * Retrieve the author's user instance
+     *
+     * @access public
+     * @return \WP_User
+     */
+    public function getAuthor()
+    {
+        return get_userdata($this->authorId());
+    }
+
+    /**
+     * Retrieve the author's user ID
+     *
+     * @access public
+     * @return string
+     */
+    public function authorId()
+    {
+        return $this->get('post_author');
+    }
+
+    /**
+     * Retrieve the author's name
+     *
+     * @access public
+     * @return string
+     */
+    public function authorName()
+    {
+        $author = $this->getAuthor();
+        return $author->display_name;
+    }
+
+    /**
+     * Retrieve the author's avatar
+     *
+     * @access public
+     * @return string
+     */
+    public function authorAvatar()
+    {
+        $author = $this->authorId();
+        return get_avatar($author, 90);
+    }
+
+
+    /**
+     * Retrieve the author's profile URL (Requires BuddyPress)
+     *
+     * @access public
+     * @return string
+     */
+    public function profileUrl()
+    {
+        if (function_exists('bp_core_get_userlink')) {
+            return bp_core_get_userlink($this->authorId(), false, true);
+        }
+        return '';
+    }
+
+    /**
      * Loads the adjacent posts
      *
      * @access public
@@ -494,7 +579,7 @@ class Post
      * This supports only the custom post types you identify and does not
      * look at categories anymore. This allows you to go from one custom post type
      * to another which was not possible with the default get_adjacent_post().
-     * Orig: wp-includes/link-template.php 
+     * Orig: wp-includes/link-template.php
      *
      * @access public
      * @param string $direction: Can be either 'prev' or 'next'

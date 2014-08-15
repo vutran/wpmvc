@@ -20,6 +20,7 @@ module.exports =
         "clean:tmp"
     ]
     compileJS : [
+        "concat:vendor"
         "concat:dev"
         "coffee:dev"
         "coffeelint:dev"

@@ -16,11 +16,15 @@ class Bootstrap
      *
      * @access public
      * @static
+     * @param string $file (default : null)
      * @return \WPMVC\Models\View
      */
-    public static function createView()
+    public static function createView($file = null)
     {
         $view = new View(TEMPLATEPATH . '/app/views/');
+        if ($file) {
+            $view->setFile($file);
+        }
         return $view;
     }
 
@@ -48,6 +52,14 @@ class Bootstrap
         if ($hooks && count($hooks)) {
             foreach ($hooks as $hook) {
                 if (file_exists($hook) && is_file($hook)) { require_once($hook); }
+            }
+        }
+
+        // Auto-load included files
+        $incs = glob(TEMPLATEPATH . '/app/inc/*');
+        if ($incs && count($incs)) {
+            foreach ($incs as $inc) {
+                if (file_exists($inc) && is_file($inc)) { require_once($inc); }
             }
         }
     }
@@ -93,6 +105,10 @@ class Bootstrap
                 global $pagename;
                 // Page view
                 $theBody->setFile($pagename);
+                // If view file doesn't exist, fallback to the page.php view
+                if (!$theBody->hasFile()) {
+                    $theBody->setFile('page');
+                }
             } elseif (is_post_type_archive()) {
                 // Post type archive
                 $theBody->setFile(sprintf('%s/index', $postType));
@@ -107,6 +123,9 @@ class Bootstrap
                 $theBody->setFile($pagename);
             }
         }
+
+        // Apply the body file filter
+        $theBody->setFile(apply_filters('wpmvc_body_file', $theBody->getFile()));
 
         echo $theHeader->output();
         echo $theBody->output();

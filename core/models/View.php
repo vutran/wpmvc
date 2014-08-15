@@ -108,16 +108,23 @@ class View extends Model
     }
 
     /**
-     * Sets the view variable
+     * Sets the view variable (will accept an array of key/values)
      *
      * @access public
-     * @param string $key
+     * @param string|array $key
      * @param mixed $value
      * @return self
      */
-    public function set($key, $value)
+    public function set($key, $value = '')
     {
-        $this->_vars[$key] = $value;
+        // If array
+        if (is_array($key)) {
+            foreach ($key as $k => $v) {
+                $this->set($k, $v);
+            }
+        } else {
+            $this->_vars[$key] = $value;   
+        }
         return $this;
     }
 

@@ -1,5 +1,6 @@
 module.exports =
     options :
+        bare : true
         join : true
     dev :
         expand : true
