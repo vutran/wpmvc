@@ -117,10 +117,6 @@ class Bootstrap
                 $postType = get_post_type();
                 // Post permalink
                 $theBody->setFile(sprintf('%s/single', $postType));
-            } elseif (is_page()) {
-                global $pagename;
-                // Page permalink
-                $theBody->setFile($pagename);
             }
         }
 
