@@ -10,7 +10,6 @@ namespace WPMVC\Common;
  */
 abstract class Model
 {
-
     /**
      * @access protected
      * @var array
@@ -64,5 +63,4 @@ abstract class Model
     {
         return $this->data;
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace WPMVC\Models;
 
-use \WPMVC\Common\Model,
-    \Minify_HTML;
+use \WPMVC\Common\Model;
+use \Minify_HTML;
 
 /**
  * The View Model
@@ -14,7 +14,6 @@ use \WPMVC\Common\Model,
  */
 class View extends Model
 {
-
     /**
      * The root path for the view (excludes the path to the file)
      *
@@ -30,7 +29,7 @@ class View extends Model
      * @var string
      */
     private $_file = '';
-    
+
     /**
      * @access private
      * @var array
@@ -51,6 +50,67 @@ class View extends Model
     }
 
     /**
+     * Sets the view path
+     *
+     * @access public
+     * @param string $path      The view's path
+     * @return self
+     */
+    public function setPath($path)
+    {
+        $this->_path = $path;
+        return $this;
+    }
+
+    /**
+     * Sets the view path
+     *
+     * @access public
+     * @return string
+     */
+    public function getPath()
+    {
+        return rtrim($this->_path, '/');
+    }
+
+    /**
+     * Checks if the view file exists
+     *
+     * @access public
+     * @return bool
+     */
+    public function hasFile()
+    {
+        return file_exists($this->getPath() . '/' . $this->getFile(true));
+    }
+
+    /**
+     * Sets the view file (make sure to exclude the PHP extension)
+     *
+     * @access public
+     * @param string $file      The file path relative to the view's path
+     * @return self
+     */
+    public function setFile($file)
+    {
+        $this->_file = $file;
+        return $this;
+    }
+
+    /**
+     * Retrieves the view file
+     *
+     * @access public
+     * @param bool $includeExtension    (default: false) Set to true to include the .php extension
+     * @return string
+     */
+    public function getFile($includeExtension = false)
+    {
+        $ext = $includeExtension ? '.php' : '';
+        return sprintf('%s%s', $this->_file, $ext);
+    }
+
+    /**
      * Sets a variable for the view
      *
      * @access public
@@ -60,7 +120,7 @@ class View extends Model
     public function setVars($vars)
     {
         // If vars is an array
-        if ( is_array($vars) && count($vars)) { 
+        if ( is_array($vars) && count($vars)) {
             // Iterate and set the var
             foreach ($vars as $key => $value) {
                 $this->setVar($key, $value);
@@ -123,7 +183,7 @@ class View extends Model
                 $this->set($k, $v);
             }
         } else {
-            $this->_vars[$key] = $value;   
+            $this->_vars[$key] = $value;
         }
         return $this;
     }
@@ -163,66 +223,4 @@ class View extends Model
             die('Fatal Error: ' . $this->getPath() . '/' . $this->getFile(true) . ' does not exist.');
         }
     }
-
-    /**
-     * Sets the view path
-     *
-     * @access public
-     * @param string $path      The view's path
-     * @return self
-     */
-    public function setPath($path)
-    {
-        $this->_path = $path;
-        return $this;
-    }
-
-    /**
-     * Sets the view path
-     *
-     * @access public
-     * @return string
-     */
-    public function getPath()
-    {
-        return rtrim($this->_path, '/');
-    }
-
-    /**
-     * Checks if the view file exists
-     *
-     * @access public
-     * @return bool
-     */
-    public function hasFile()
-    {
-        return file_exists($this->getPath() . '/' . $this->getFile(true));
-    }
-
-    /**
-     * Sets the view file
-     *
-     * @access public
-     * @param string $file      The file path relative to the view's path
-     * @return self
-     */
-    public function setFile($file)
-    {
-        $this->_file = $file;
-        return $this;
-    }
-
-    /**
-     * Retrieves the view file
-     *
-     * @access public
-     * @param bool $includeExtension    (default: false) Set to true to include the .php extension
-     * @return string
-     */
-    public function getFile($includeExtension = false)
-    {
-        $ext = $includeExtension ? '.php' : '';
-        return sprintf('%s%s', $this->_file, $ext);
-    }
-
 }

@@ -13,7 +13,6 @@ use \WPMVC\Models\Post;
  */
 class ACFPost extends Post
 {
-
     /**
      * Sets the transient timeout for the field values
      *
@@ -75,5 +74,4 @@ class ACFPost extends Post
     {
         return $this->hasField($key) ? $this->acfValues[$key] : null;
     }
-
 }

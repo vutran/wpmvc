@@ -13,7 +13,6 @@ use \WPMVC\Models\Post;
  */
 class MFPost extends Post
 {
-
     /**
      * An array of MF2 keys and values
      *
@@ -48,5 +47,4 @@ class MFPost extends Post
         $file = WP_PLUGIN_DIR . '/magic-fields-2/mf_front_end.php';
         if (file_exists($file)) { include_once($file); }
     }
-
 }

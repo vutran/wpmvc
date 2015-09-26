@@ -12,7 +12,6 @@ use \WPMVC\Common\Model;
  */
 class AjaxResponse extends Model
 {
-
     /**
      * The response status
      *
@@ -85,5 +84,4 @@ class AjaxResponse extends Model
         echo json_encode($data);
         die();
     }
-
 }

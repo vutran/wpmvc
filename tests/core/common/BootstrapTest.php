@@ -24,6 +24,45 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests setting and getting the template path
+     *
+     * @access public
+     * @return void
+     */
+    public function testSetGetTemplatePath()
+    {
+        $app = new Bootstrap;
+        $app->setTemplatePath('/users/MyName/test/path');
+        $this->assertSame('/users/MyName/test/path', $app->getTemplatePath());
+    }
+
+    /**
+     * Tests setting and getting the template directory
+     *
+     * @access public
+     * @return void
+     */
+    public function testSetGetTemplateDir()
+    {
+        $app = new Bootstrap;
+        $app->setTemplateDir('/test/dir');
+        $this->assertSame('/test/dir', $app->getTemplateDir());
+    }
+
+    /**
+     * Tests setting and getting the template URL
+     *
+     * @access public
+     * @return void
+     */
+    public function testSetGetTemplateUrl()
+    {
+        $app = new Bootstrap;
+        $app->setTemplateUrl('http://mywebsite.com/test/dir');
+        $this->assertSame('http://mywebsite.com/test/dir', $app->getTemplateUrl());
+    }
+
+    /**
      * Tests creating a View instance
      *
      * @access public
@@ -33,7 +72,7 @@ class BootstrapTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateView($app)
     {
-        $view = $app->createView('test.php');
+        $view = $app->createView('test');
         $this->assertInstanceOf('\WPMVC\Models\View', $view);
     }
 }

@@ -13,7 +13,6 @@ use \wpdb;
  */
 abstract class Repository
 {
-
     /**
      * The wpdb instance
      *
@@ -137,5 +136,4 @@ abstract class Repository
         // Return the wrapped instance
         return new $this->className($thePost);
     }
-
 }

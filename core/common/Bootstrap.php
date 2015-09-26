@@ -44,6 +44,12 @@ class Bootstrap
      */
     public function __construct($options = array())
     {
+        $defaults = [
+            'templatePath' => '',
+            'templateDir' => '',
+            'templateUrl' => ''
+        ];
+        $options = array_merge($defaults, $options);
         $this
             ->setTemplatePath($options['templatePath'])
             ->setTemplateDir($options['templateDir'])
@@ -88,6 +94,17 @@ class Bootstrap
     }
 
     /**
+     * Gets the template path
+     *
+     * @access public
+     * @return string
+     */
+    public function getTemplatePath()
+    {
+        return $this->templatePath;
+    }
+
+    /**
      * Sets the template directory
      *
      * @access public
@@ -101,6 +118,17 @@ class Bootstrap
     }
 
     /**
+     * Gets the template directory
+     *
+     * @access public
+     * @return string
+     */
+    public function getTemplateDir()
+    {
+        return $this->templateDir;
+    }
+
+    /**
      * Sets the template URL
      *
      * @access public
@@ -111,6 +139,17 @@ class Bootstrap
     {
         $this->templateUrl = $url;
         return $this;
+    }
+
+    /**
+     * Gets the template URL
+     *
+     * @access public
+     * @return string
+     */
+    public function getTemplateUrl()
+    {
+        return $this->templateUrl;
     }
 
     /**
@@ -197,5 +236,4 @@ class Bootstrap
     {
         printf('<script type="text/javascript" href="%s/dist/bundle.js"></script>', TEMPLATE_URL);
     }
-
 }

@@ -13,7 +13,6 @@ use WP_Query;
  */
 class Post
 {
-
     /**
      * The transient timeout
      *
@@ -710,5 +709,4 @@ class Post
     {
         return $this->hasPrevPost() ? $this->nextPost->post_title : '';
     }
-
 }

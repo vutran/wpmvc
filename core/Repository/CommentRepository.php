@@ -3,15 +3,14 @@
 namespace WPMVC\Repository;
 
 // Import namespaces
-use \WPMVC\Common\Model,
-    \WPMVC\Models\Comment;
+use \WPMVC\Common\Model;
+use \WPMVC\Models\Comment;
 
 /**
  * Comment repository
  */
 class CommentRepository extends Model
 {
-
     /**
      * The associated post type
      *
@@ -80,5 +79,4 @@ class CommentRepository extends Model
         // Convert and return the comments
         return $this->convertAndReturn($comments);
     }
-
 }

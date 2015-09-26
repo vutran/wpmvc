@@ -10,7 +10,6 @@ namespace WPMVC\Models;
  */
 class Comment
 {
-
     /**
      * The transient timeout
      *
@@ -285,5 +284,4 @@ class Comment
     {
         return wp_get_comment_status($this->id());
     }
-
 }
