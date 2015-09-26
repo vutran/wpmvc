@@ -4,11 +4,10 @@ WordPress based MVC theme skeleton.
 
 # Features
  - Create and organize application specific Models and Views
- - Manage third-party PHP libraries/packages with Composer
- - Manage and compile static assets with Grunt
-   - Install third-party Frontend libraries with Bower
-   - Frontend development with CoffeeScript, SASS and Bourbon
-   - Image and SVG minifications
+ - Manage PHP packages with Composer
+ - Managed JS packages with NPM
+ - Bundle assets with webpack
+ - Develop with ES6 in the front-end
 
 # General Documentation
 
@@ -24,17 +23,11 @@ Open the Terminal and switch the current directory to your theme folder and run 
 
 Once composer has installed all the necessary vendor packages and create an autoload file in the `vendor/` directory inside of your theme folder, you can continue to view your website.
 
-## Compiling with Grunt
+## Compiling with webpack
 
-You are required to install node in your server or local environment to be able to Grunt. Please refer to the official documentation for more information.
+You are required to install node in your environment to be able to webpack. Please refer to the official documentation for more information.
 
-`grunt dev`
-
-Compile all static assets (development)
-
-`grunt dist`
-
-Compile the static assets (distribution)
+`webpack`
 
 ## Your Application Resources
 
@@ -63,4 +56,4 @@ Views should be stored in the `app/views/` directory. These are regular HTML-bas
 
 ### Assets
 
-Please store all static assets files (fonts, images, scripts, and stylesheets) in the `app/assets` folder respectively. Grunt will then compile these assets into the public `assets` folder for your theme.
+Please store all static assets files (fonts, images, scripts, and stylesheets) in the `app/assets` folder respectively. The framework will automatically load bundle everything into the `dist/bundle.js` file.
