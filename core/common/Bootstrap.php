@@ -10,18 +10,119 @@ use WPMVC\Models\View;
  */
 class Bootstrap
 {
+    /**
+     * The full server path to the template directory
+     *
+     * @access protected
+     * @var string
+     */
+    protected $templatePath;
+
+    /**
+     * The template directory (excludes the hostname and protocol)
+     *
+     * @access protected
+     * @var string
+     */
+    protected $templateDir;
+
+    /**
+     * The full URL to the template directory
+     *
+     * @access protected
+     * @var string
+     */
+    protected $templateUrl;
+
+    /**
+     * Initializes the WordPress theme
+     *
+     * @access public
+     * @param array $options
+     * @param string $options['templateDir'] (default: "")
+     * @return void
+     */
+    public function __construct($options = array())
+    {
+        $this
+            ->setTemplatePath($options['templatePath'])
+            ->setTemplateDir($options['templateDir'])
+            ->setTemplateUrl($options['templateUrl']);
+
+        // Auto-load hook files
+        $hooks = glob($this->templatePath . '/app/hooks/*');
+        if ($hooks && count($hooks)) {
+            foreach ($hooks as $hook) {
+                if (file_exists($hook) && is_file($hook)) {
+                    require_once($hook);
+                }
+            }
+        }
+
+        // Auto-load included files
+        $incs = glob($this->templatePath . '/app/inc/*');
+        if ($incs && count($incs)) {
+            foreach ($incs as $inc) {
+                if (file_exists($inc) && is_file($inc)) {
+                    require_once($inc);
+                }
+            }
+        }
+
+        if (function_exists('add_action')) {
+            add_action('wpmvc_theme_footer', array(&$this, 'appendWebpackBundle'));
+        }
+    }
+
+    /**
+     * Sets the template path
+     *
+     * @access public
+     * @param string $path
+     * @return self
+     */
+    public function setTemplatePath($path)
+    {
+        $this->templatePath = $path;
+        return $this;
+    }
+
+    /**
+     * Sets the template directory
+     *
+     * @access public
+     * @param string $dir
+     * @return self
+     */
+    public function setTemplateDir($dir)
+    {
+        $this->templateDir = $dir;
+        return $this;
+    }
+
+    /**
+     * Sets the template URL
+     *
+     * @access public
+     * @param string $url
+     * @return self
+     */
+    public function setTemplateUrl($url)
+    {
+        $this->templateUrl = $url;
+        return $this;
+    }
 
     /**
      * Create a new View instance
      *
      * @access public
-     * @static
      * @param string $file (default : null)
      * @return \WPMVC\Models\View
      */
-    public static function createView($file = null)
+    public function createView($file = null)
     {
-        $view = new View(TEMPLATEPATH . '/app/views/');
+        $view = new View($this->templatePath . '/app/views/');
         if ($file) {
             $view->setFile($file);
         }
@@ -29,42 +130,6 @@ class Bootstrap
     }
 
     /**
-     * Initializes the WordPress theme
-     *
-     * @access public
-     * @param string $rootDir (default: "")
-     * @return void
-     */
-    public function __construct($rootDir = "")
-    {
-        // Define default constants
-        define('WP_HOME_URL', get_home_url());
-        define('WP_SITENAME', get_bloginfo('name'));
-        define('WP_AJAX_URL', admin_url('admin-ajax.php'));
-        define('TEMPLATEDIR', str_replace(WP_CONTENT_DIR, '', WP_CONTENT_URL . TEMPLATEPATH));
-        define('STYLESHEET_URL', get_stylesheet_directory_uri());
-        define('TEMPLATE_URL', get_template_directory_uri());
-        define('ASSETSDIR', get_template_directory_uri().'/app/assets');
-        define('RSS2_URL', get_bloginfo('rss2_url'));
-
-        // Auto-load hook files
-        $hooks = glob(TEMPLATEPATH . '/app/hooks/*');
-        if ($hooks && count($hooks)) {
-            foreach ($hooks as $hook) {
-                if (file_exists($hook) && is_file($hook)) { require_once($hook); }
-            }
-        }
-
-        // Auto-load included files
-        $incs = glob(TEMPLATEPATH . '/app/inc/*');
-        if ($incs && count($incs)) {
-            foreach ($incs as $inc) {
-                if (file_exists($inc) && is_file($inc)) { require_once($inc); }
-            }
-        }
-    }
-
-    /** 
      * Begin the routing
      *
      * @access public
@@ -126,6 +191,11 @@ class Bootstrap
         echo $theHeader->output();
         echo $theBody->output();
         echo $theFooter->output();
+    }
+
+    public function appendWebpackBundle()
+    {
+        printf('<script type="text/javascript" href="%s/dist/bundle.js"></script>', TEMPLATE_URL);
     }
 
 }

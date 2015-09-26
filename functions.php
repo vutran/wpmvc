@@ -11,4 +11,8 @@ if (file_exists(STYLESHEETPATH . '/vendor/autoload.php')) {
 global $app;
 
 // Instantiate the WPMVC
-$app = new Bootstrap(TEMPLATEPATH);
+$app = new Bootstrap([
+    'templatePath' => TEMPLATEPATH,
+    'templateDir' => str_replace(WP_CONTENT_DIR, '', WP_CONTENT_URL . $this->templatePath),
+    'templateUrl' => get_template_directory_uri()
+]);
