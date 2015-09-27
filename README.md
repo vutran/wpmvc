@@ -1,13 +1,15 @@
 # WordPress MVC Theme Skeleton
 
-WordPress based MVC theme skeleton.
+WordPress MVC framework -- Docker, webpack, Babel/ES6, SCSS, PostCSS
 
 # Features
- - Create and organize application specific Models and Views
+ - WordPress/MySQL contained within Docker!
+ - Create and organize application specific Models, and Views
  - Manage PHP packages with Composer
  - Managed JS packages with NPM
  - Bundle assets with webpack
  - Develop with ES6 in the front-end
+ - MVC architecture for easily seperating your business logic and markup.
 
 # General Documentation
 
@@ -15,7 +17,7 @@ WordPress based MVC theme skeleton.
 
 Open the Terminal switch the current directory to your theme folder and run `npm install`.
 
-Once npm has installed all the necessary node packages, you can begin compiling Grunt (see below for more information).
+Once npm has installed all the necessary node packages, you can begin bundling your assets with webpack (see below for more information).
 
 ## Install Composer Packages
 
