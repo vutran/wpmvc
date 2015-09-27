@@ -29,6 +29,14 @@ You are required to install node in your environment to be able to webpack. Plea
 
 `webpack`
 
+## Running with Docker
+
+You can choose to use Docker with this theme file easily. Make sure Docker Toolbox is currently installed on your computer. Once installed, just run `docker-compose up` when switched to this directory. You don't even need to have WordPress installed in your project folder since everything is contained in Docker!
+
+### Booting up the first time
+
+When you boot up the container for the very first time, you will have to go through the WordPress setup flow and set a wp-admin username and password.
+
 ## Your Application Resources
 
 Your app codebase should be stored in the `app` folder located in your theme's folder.

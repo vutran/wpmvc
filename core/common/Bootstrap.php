@@ -56,7 +56,7 @@ class Bootstrap
             ->setTemplateUrl($options['templateUrl']);
 
         // Auto-load hook files
-        $hooks = glob($this->templatePath . '/app/hooks/*');
+        $hooks = glob($this->getTemplatePath() . '/app/hooks/*');
         if ($hooks && count($hooks)) {
             foreach ($hooks as $hook) {
                 if (file_exists($hook) && is_file($hook)) {
@@ -66,7 +66,7 @@ class Bootstrap
         }
 
         // Auto-load included files
-        $incs = glob($this->templatePath . '/app/inc/*');
+        $incs = glob($this->getTemplatePath() . '/app/inc/*');
         if ($incs && count($incs)) {
             foreach ($incs as $inc) {
                 if (file_exists($inc) && is_file($inc)) {
@@ -161,7 +161,7 @@ class Bootstrap
      */
     public function createView($file = null)
     {
-        $view = new View($this->templatePath . '/app/views/');
+        $view = new View($this->getTemplatePath() . '/app/views/');
         if ($file) {
             $view->setFile($file);
         }
@@ -177,9 +177,9 @@ class Bootstrap
     public function init()
     {
         // Create a new view and set the default path as the current path
-        $theHeader = new View(TEMPLATEPATH . '/core/Views/');
-        $theBody = new View(TEMPLATEPATH . '/app/views/');
-        $theFooter = new View(TEMPLATEPATH . '/core/Views/');
+        $theHeader = new View($this->getTemplatePath() . '/core/Views/');
+        $theBody = new View($this->getTemplatePath() . '/app/views/');
+        $theFooter = new View($this->getTemplatePath() . '/core/Views/');
 
         // Set the header view
         $theHeader->setFile('header');
@@ -234,6 +234,6 @@ class Bootstrap
 
     public function appendWebpackBundle()
     {
-        printf('<script type="text/javascript" href="%s/dist/bundle.js"></script>', TEMPLATE_URL);
+        printf('<script type="text/javascript" href="%s/dist/bundle.js"></script>', $this->getTemplateUrl());
     }
 }
