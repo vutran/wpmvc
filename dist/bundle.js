@@ -51,6 +51,7 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
+	// Import your stylesheets here...
 	'use strict';
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -58,8 +59,10 @@
 	var _assetsStylesheetsStyleScss = __webpack_require__(2);
 	
 	var _assetsStylesheetsStyleScss2 = _interopRequireDefault(_assetsStylesheetsStyleScss);
-	
-	console.log('hello world');
+
+	// You can also import your components (see example below)
+	// Note: paths are relative to the directory of the current file.
+	// import myComponent from './assets/components/myComponent';
 
 /***/ },
 /* 2 */
@@ -96,7 +99,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background-color: #333; }\n", ""]);
+	exports.push([module.id, "body {\n  background-color: #eee; }\n\nh1 {\n  font-size: 30px;\n  font-family: Helvetica, Arial, sans-serif;\n  margin-bottom: 30px; }\n\na {\n  color: #333; }\n\n.intro {\n  width: 50%;\n  text-align: center;\n  margin-top: 150px;\n  margin-left: auto;\n  margin-right: auto; }\n", ""]);
 	
 	// exports
 

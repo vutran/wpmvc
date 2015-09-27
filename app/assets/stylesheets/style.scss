@@ -8,6 +8,14 @@ h1 {
     margin-bottom: 30px;
 }
 
-.intro {
+a {
+    color: #333;
+}
+
+:global(.intro) {
+    width: 50%;
     text-align: center;
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
 }

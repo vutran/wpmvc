@@ -234,6 +234,6 @@ class Bootstrap
 
     public function appendWebpackBundle()
     {
-        printf('<script type="text/javascript" href="%s/dist/bundle.js"></script>', $this->getTemplateUrl());
+        printf('<script type="text/javascript" src="%s/dist/bundle.js"></script>', $this->getTemplateUrl());
     }
 }
