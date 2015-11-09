@@ -1,44 +1,21 @@
 [
     {
-        "name": "mrclay/minify",
-        "version": "2.2.0",
-        "version_normalized": "2.2.0.0",
+        "name": "vutran/wpmvc-core",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/mrclay/minify.git",
-            "reference": "d245bca4987dec197d1e6d7dc117614b60ff7494"
+            "url": "git@github.com:vutran/wpmvc-core.git",
+            "reference": "df4b6b8b552668e4ae78ed54b975eb9b4094cb06"
         },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/mrclay/minify/zipball/d245bca4987dec197d1e6d7dc117614b60ff7494",
-            "reference": "d245bca4987dec197d1e6d7dc117614b60ff7494",
-            "shasum": ""
-        },
-        "require": {
-            "ext-pcre": "*",
-            "php": ">=5.2.1"
-        },
-        "time": "2014-03-12 12:54:23",
+        "time": "2015-11-09 23:30:42",
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
-            "classmap": [
-                "min/lib/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Stephen Clay",
-                "email": "steve@mrclay.org",
-                "homepage": "http://www.mrclay.org/",
-                "role": "Developer"
+            "psr-4": {
+                "WPMVC\\": "src/"
             }
-        ],
-        "description": "Minify is a PHP5 app that helps you follow several rules for client-side performance. It combines multiple CSS or Javascript files, removes unnecessary whitespace and comments, and serves them with gzip encoding and optimal client-side cache headers",
-        "homepage": "http://code.google.com/p/minify/"
+        },
+        "description": "WPMVC Core"
     }
 ]

@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'WPMVC\\' => array($baseDir . '/core'),
+    'WPMVC\\' => array($vendorDir . '/vutran/wpmvc-core/src'),
 );

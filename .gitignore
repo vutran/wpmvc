@@ -1,7 +1,14 @@
+# App-related files
+dist/
+
+# Mac Hidden Files
 .DS_Store
-_notes/
-.sass-cache/
+
+# Composer files
+vendor/
+
+# Node files
 node_modules/
-vendor/.git/
 node-debug.log
 npm-debug.log
+.sass-cache/

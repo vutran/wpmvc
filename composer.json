@@ -1,14 +1,13 @@
 {
-    "autoload" : {
-        "psr-4" : {
-            "WPMVC\\" : "core/"
-        },
-        "classmap" : [
-            "app/models/",
-            "app/traits/"
-        ]
-    },
+    "name": "vutran/wpmvc",
+    "description": "WPMVC Framework",
     "require" : {
-        "mrclay/minify": "2.2.0"
-    }
+        "vutran/wpmvc-core": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:vutran/wpmvc-core.git"
+        }
+    ]
 }
