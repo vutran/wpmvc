@@ -1,5 +1,5 @@
 body {
-    background-color: #eee;
+    background-color: red;
 }
 
 h1 {
@@ -12,7 +12,7 @@ a {
     color: #333;
 }
 
-:global(.intro) {
+.intro {
     width: 50%;
     text-align: center;
     margin-top: 150px;

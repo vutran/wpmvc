@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'wp_enqueue_scripts', 'app_add_webpack_bundle' );
+add_action( 'wp_footer', 'app_add_webpack_bundle' );
 
 /**
  * Adds the webpack bundle file
@@ -11,7 +11,8 @@ add_action( 'wp_enqueue_scripts', 'app_add_webpack_bundle' );
 function app_add_webpack_bundle()
 {
     printf(
-        '<script type="text/javascript" src="%s/dist/bundle.js"></script>',
-        get_stylesheet_directory_uri()
+        '<script type="text/javascript" src="%s/bundle.js"></script>',
+        'http://dockerhost:4000'
+        // get_stylesheet_directory_uri() // production
     );
 }

@@ -2,10 +2,24 @@ wordpress:
   image: wordpress
   links:
     - db:mysql
+    - hotReload:hotReload
   ports:
     - 8080:80
   volumes:
     - .:/var/www/html/wp-content/themes/wpmvc:ro
+
+hotReload:
+  image: node
+  ports:
+   - 4000:4000
+  volumes:
+   - .:/usr/src/app
+  working_dir: /usr/src/app
+  hostname: localhost
+  environment:
+    NODE_ENV: development
+    PORT: 4000
+  command: sh hotReload.init.sh
 
 db:
   image: mysql

@@ -1,14 +1,15 @@
 // Import components
 var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
-var postCssLocalScope = require('postcss-local-scope');
 var path = require('path');
 
 module.exports = {
     entry: [
+        'webpack-hot-middleware/client?path=http://dockerhost:4000/__webpack_hmr', // enable hot reloading (should only be used for development)
         path.join(__dirname, '/app/index.js')
     ],
     output: {
+        publicPath: 'http://dockerhost:4000/', // enable hot relaoding ( should only be used for development)
         path: path.join(__dirname, '/dist'),
         filename: 'bundle.js'
     },
@@ -51,6 +52,11 @@ module.exports = {
         parser: 'babel-eslint'
     },
     postcss: function() {
-        return [autoprefixer, postCssLocalScope];
-    }
+        return [autoprefixer];
+    },
+    plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+    ]
 };
