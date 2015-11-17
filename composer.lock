@@ -13,7 +13,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:vutran/wpmvc-core.git",
-                "reference": "1e653d662c91638766ef6cacad21386819e105be"
+                "reference": "1a4af5ced98cd51cfe7050e84232bebfebed419c"
             },
             "type": "library",
             "autoload": {
@@ -22,7 +22,7 @@
                 }
             },
             "description": "WPMVC Core",
-            "time": "2015-11-11 17:08:04"
+            "time": "2015-11-17 18:06:05"
         }
     ],
     "packages-dev": [],
