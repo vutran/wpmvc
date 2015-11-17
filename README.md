@@ -1,6 +1,6 @@
-# WordPress MVC Theme Skeleton
+# WordPress MVC Theme Skeleton (WPMVC)
 
-WordPress MVC framework -- Docker, webpack, Babel/ES6, SCSS, PostCSS
+WordPress MVC framework -- Docker, webpack, hot reloading, Babel/ES6, SCSS, PostCSS
 
 # Features
  - WordPress/MySQL contained within Docker
@@ -11,13 +11,34 @@ WordPress MVC framework -- Docker, webpack, Babel/ES6, SCSS, PostCSS
  - Develop with ES6 in the front-end
  - MVC architecture for easily seperating your business logic and markup
 
-# General Documentation
+# Usage Documentation
 
-## Running with Docker
+## Installation
 
-Make sure Docker Toolbox is currently installed on your computer. Once installed, just run `docker-compose up` when switched to this directory. You don't even need to have WordPress installed in your project folder since everything is contained in Docker!
+To get started, make sure you have [Docker](https://www.docker.com/) installed.
 
-### Booting up the first time
+Once Docker has been installed on your machine, simply clone this repository and boot it up.
+
+````
+
+# Create a new directory for the project
+mkdir my-website
+
+# Switch to the new directory
+cd my-website
+
+# Clone the repository
+git clone git@github.com:vutran/wpmvc.git .
+
+# Install composer packages
+php composer.phar install
+
+# Boot up with Docker Compose
+docker-compose up
+
+````
+
+## Booting up the first time
 
 When you boot up the container for the very first time, you will have to go through the WordPress setup flow and set a WordPress admin username and password.
 
@@ -52,4 +73,4 @@ Please store all static assets files (fonts, images, scripts, and stylesheets) i
 
 Hot reloading is served in a separate node.js container and linked via Docker Compose.
 
-### Note: Please remember to disable hot reloading on production!
+**Note: Please remember to disable hot reloading on production!**
