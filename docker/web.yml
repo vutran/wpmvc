@@ -1,0 +1,6 @@
+web:
+  image: vutran/docker-library-wordpress
+  ports:
+   - 80:80
+  environment:
+    WORDPRESS_DEBUG: "true"

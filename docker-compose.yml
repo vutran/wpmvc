@@ -1,12 +1,37 @@
-wordpress:
-  image: wordpress
-  links:
-    - db:mysql
-    - hotReload:hotReload
-  ports:
-    - 8080:80
+db:
+  extends:
+    file: docker/db.yml
+    service: db
   volumes:
-    - .:/var/www/html/wp-content/themes/wpmvc:ro
+    - ./data:/var/lib/mysql
+
+web:
+  extends:
+    file: docker/web.yml
+    service: web
+  links:
+   - db:mysql
+  volumes:
+   - .:/var/www/html/wp-content/themes/wpmvc
+
+phpma:
+  extends:
+    file: docker/phpma.yml
+    service: phpma
+  links:
+   - db:mysql
+
+install:
+  image: composer/composer
+  volumes:
+   - .:/var/www/html/wp-content/themes/wpmvc
+  entrypoint: /var/www/html/wp-content/themes/wpmvc/docker/scripts/install.sh
+
+update:
+  image: composer/composer
+  volumes:
+   - .:/var/www/html/wp-content/themes/wpmvc
+  entrypoint: /var/www/html/wp-content/themes/wpmvc/docker/scripts/update.sh
 
 hotReload:
   image: node
@@ -20,8 +45,3 @@ hotReload:
     NODE_ENV: development
     PORT: 4000
   command: sh hotReload.init.sh
-
-db:
-  image: mysql
-  environment:
-    MYSQL_ROOT_PASSWORD: root

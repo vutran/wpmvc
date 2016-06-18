@@ -1,13 +1,17 @@
 {
-    "name": "vutran/wpmvc",
-    "description": "WPMVC Framework",
-    "require" : {
-        "vutran/wpmvc-core": "dev-master"
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@github.com:vutran/wpmvc-core.git"
-        }
-    ]
+  "name": "vutran/wpmvc",
+  "description": "WPMVC Framework",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vu Tran",
+      "email": "vu@vu-tran.com"
+    }
+  ],
+  "require" : {
+    "vutran/wpmvc-core": "~v0.1.3"
+  },
+  "config": {
+    "secure-http": false
+  }
 }

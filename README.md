@@ -9,33 +9,46 @@ WordPress MVC framework -- Docker, webpack, hot reloading, Babel/ES6, SCSS, Post
  - Managed JS packages with NPM
  - Modules bundling and hot reloading with webpack on a separate node.js server
  - Develop with ES6 in the front-end
- - MVC architecture for easily seperating your business logic and markup
+ - View architecture for easily separating presentation and business logic
 
-# Usage Documentation
-
-## Installation
+## Quickstart
 
 To get started, make sure you have [Docker](https://www.docker.com/) installed.
 
-Once Docker has been installed on your machine, simply clone this repository and boot it up.
+#### Install Composer packages
 
+````bash
+$ docker-compose up install
 ````
 
-# Create a new directory for the project
-mkdir my-website
+#### Update Composer packages
 
-# Switch to the new directory
-cd my-website
+````bash
+$ docker-compose up update
+````
 
-# Clone the repository
-git clone git@github.com:vutran/wpmvc.git .
+#### Boot up the database and web services
 
-# Install composer packages
-php composer.phar install
+````bash
+$ docker-compose up db web
+````
 
-# Boot up with Docker Compose
-docker-compose up
+#### Boot up the a PHPMyAdmin service
 
+````bash
+$ docker-compose up phpma
+````
+
+#### Boot up the hot reload server
+
+````bash
+$ docker-compose up hotReload
+````
+
+#### Boot up a development workflow (db, web, PHPMyAdmin, and hotReload)
+
+````bash
+$ docker-compose up db web phpma hotReload
 ````
 
 ## Booting up the first time
@@ -56,7 +69,7 @@ Models are stored in the `app/models/` directory. Models holds your data for a s
 
 Views should be stored in the `app/views/` directory. These are regular HTML-based template with a mixture of some PHP.
 
-| View Name | Vilew File |
+| View Name | View File |
 |:---|:---|
 |Home Page|views/home.php|
 |404 Error Page|views/404.php|

@@ -5,11 +5,11 @@ var path = require('path');
 
 module.exports = {
     entry: [
-        'webpack-hot-middleware/client?path=http://dockerhost:4000/__webpack_hmr', // enable hot reloading (should only be used for development)
+        'webpack-hot-middleware/client?path=http://192.168.99.100:4000/__webpack_hmr', // enable hot reloading (should only be used for development)
         path.join(__dirname, '/app/index.js')
     ],
     output: {
-        publicPath: 'http://dockerhost:4000/', // enable hot relaoding ( should only be used for development)
+        publicPath: 'http://192.168.99.100:4000/', // enable hot relaoding ( should only be used for development)
         path: path.join(__dirname, '/dist'),
         filename: 'bundle.js'
     },

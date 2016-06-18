@@ -1,0 +1,6 @@
+db:
+  image: mysql:5.7
+  hostname: dbhost
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: wordpress

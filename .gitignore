@@ -1,5 +1,6 @@
 # App-related files
 dist/
+data/
 
 # Mac Hidden Files
 .DS_Store
